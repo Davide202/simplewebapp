@@ -17,6 +17,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @SpringBootTest
 class DemoApplicationTests {
 
@@ -56,6 +60,14 @@ class DemoApplicationTests {
 
 
 		Assertions.assertEquals(response.getStatusCode(), HttpStatus.OK);
+	}
+
+	@Test
+	void parseDAte() throws ParseException {
+		String dateasstring = "01/01/2009";
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = formatter.parse(dateasstring);
+		System.out.println(date);
 	}
 
 }
