@@ -10,6 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -17,12 +19,15 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @SpringBootTest
 class DemoApplicationTests {
+
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	TestRestTemplate testRestTemplate = new TestRestTemplate();
 
@@ -68,6 +73,29 @@ class DemoApplicationTests {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = formatter.parse(dateasstring);
 		System.out.println(date);
+	}
+
+	@Test
+	void serialization() throws IOException, ClassNotFoundException {
+		File tempFile = File.createTempFile("aaaa",null);
+		tempFile.deleteOnExit();
+
+		FileOutputStream f = new FileOutputStream(tempFile);
+		ObjectOutput s = new ObjectOutputStream(f);
+		s.writeObject("Today");
+		s.writeObject(new Date());
+		s.flush();
+		f.close();
+
+		FileInputStream in = new FileInputStream(tempFile);
+		ObjectInputStream is = new ObjectInputStream(in);
+		String today = (String)is.readObject();
+		Date date = (Date)is.readObject();
+		in.close();
+
+        logger.info("{}  {}", today, date);
+
+
 	}
 
 }
