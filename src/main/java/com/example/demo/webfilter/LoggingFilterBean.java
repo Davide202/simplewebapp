@@ -50,7 +50,7 @@ public class LoggingFilterBean extends GenericFilterBean {
         StringBuilder builder = new StringBuilder();
         //builder.append(headersToString(response.getHeaderNames(), response::getHeader));
         builder.append(new String(response.getContentAsByteArray()));
-        log.info("Response: status {} - body {}",response.getStatus(), builder.isEmpty() ? "NULL" : builder);
+        log.info("Response: status {} - body {}",response.getStatus(), builder.toString().isEmpty() ? "NULL" : builder);
         response.copyBodyToResponse();
     }
 
