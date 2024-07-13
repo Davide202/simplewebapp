@@ -32,19 +32,26 @@ class DemoApplicationTests {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	ObjectMapper mapper;
-	@Autowired
+	private ObjectMapper mapper;
 	private ServerProperties serverProperties;
 	private String basePath;
-	TestRestTemplate testRestTemplate;
+	private TestRestTemplate testRestTemplate;
 
-	@PostConstruct
-	void init(){
+	@Autowired
+	private DemoApplicationTests(ObjectMapper mapper,ServerProperties serverProperties){
+		this.mapper = mapper;
+		this.serverProperties = serverProperties;
 		testRestTemplate = new TestRestTemplate();
 		mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		basePath = String.format("http://localhost:%s",serverProperties.getPort());
 	}
+
+//	@PostConstruct
+//	void init(){
+//		testRestTemplate = new TestRestTemplate();
+//		mapper.enable(SerializationFeature.INDENT_OUTPUT);
+//		basePath = String.format("http://localhost:%s",serverProperties.getPort());
+//	}
 
 	@Test
 	void actuator() throws JsonProcessingException, JSONException {
@@ -82,7 +89,7 @@ class DemoApplicationTests {
 		ObjectOutput s = new ObjectOutputStream(new FileOutputStream(tempFile));
 			s.writeObject("Today");
 			s.writeObject(new Date());
-			s.writeObject("Today2");
+			s.writeObject("Tomorrow");
 				ZoneId zoneId = ZoneId.systemDefault();
 				LocalDate localDate = LocalDate.now().plusDays(1);
 				ZonedDateTime zonedDateTime = localDate.atStartOfDay(zoneId);

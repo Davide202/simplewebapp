@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.support.RequestHandledEvent;
+import org.springframework.web.context.support.ServletRequestHandledEvent;
 
 @Service
 public class ServerPortService {
@@ -25,7 +25,7 @@ public class ServerPortService {
     }
 
     @EventListener
-    public void onRequest(final RequestHandledEvent event) {
+    public void onRequest(final ServletRequestHandledEvent event) {
         log.info(event.toString());
     }
 }
